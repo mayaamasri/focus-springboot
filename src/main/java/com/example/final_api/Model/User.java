@@ -32,6 +32,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Note> notes;
 
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Task> tasks;
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<CollabNote> collabNotes;
 
@@ -91,7 +95,14 @@ public class User {
     public void setNotes(List<Note> notes) {
         this.notes = notes;
     }
+
+//    public List<Task> getTasks() {
+//        return tasks;
+//    }
 //
+//    public void setTasks(List<Task> tasks) {
+//        this.tasks = tasks;
+//    }
 //    public List<CollabNote> getCollabNotes() {
 //        return collabNotes;
 //    }

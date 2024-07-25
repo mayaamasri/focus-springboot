@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -40,12 +41,15 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCourse(@RequestBody Course course) {
+    public ResponseEntity<?> createCourse(@RequestBody Course course, BindingResult result) {
+        System.out.println("Received course: " + course);
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body(result.getAllErrors());
+        }
         try {
             Course savedCourse = courseService.saveCourse(course);
             return new ResponseEntity<>(savedCourse, HttpStatus.CREATED);
         } catch (Exception e) {
-            // Log the exception details here to diagnose
             return new ResponseEntity<>("Error creating course: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -58,7 +62,13 @@ public class CourseController {
         Course updatedCourse = courseService.updateCourse(id, course);
         return ResponseEntity.ok(updatedCourse);
     }
-
+    @GetMapping("/findByName")
+    public ResponseEntity<Course> getCourseByCourseNameAndUserUserId(
+            @RequestParam String name,
+            @RequestParam int userId) {
+        Course course = courseService.getCourseByNameAndUserId(name, userId);
+        return ResponseEntity.ok(course);
+    }
     @DeleteMapping("/{id}")
     public void deleteById(@PathVariable Integer id) {
         courseService.deleteCourse(id);

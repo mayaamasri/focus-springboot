@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -29,16 +31,25 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody User user) {
+    public ResponseEntity<Map<String, Object>> signup(@RequestBody User user) {
         User savedUser = userService.saveUser(user);
-        return new ResponseEntity<User>(savedUser, HttpStatus.CREATED);
+        Map<String, Object> response = new HashMap<>();
+        response.put("userId", savedUser.getUserId());
+        response.put("username", savedUser.getUsername());
+        response.put("success", true);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody User user) {
-        boolean loginSuccessful = userService.login(user.getEmail(), user.getPassword());
-        return ResponseEntity.ok(loginSuccessful);}
 
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody User user) {
+        User loginUser = userService.login(user.getEmail(), user.getPassword());
+        if (loginUser != null) {
+            return ResponseEntity.ok(Map.of("userId", loginUser.getUserId(), "username", loginUser.getUsername(), "success", true));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+        }
+    }
 
 }
 

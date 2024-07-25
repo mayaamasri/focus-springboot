@@ -44,7 +44,10 @@ public class NoteService {
 
         return noteRepository.save(note);
     }
-
+    public Note getNoteByTitleAndUserId(String title, Integer userId) {
+        return noteRepository.findByTitleAndUserUserId(title, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Note not found with title " + title + " and userId " + userId));
+    }
     public Map<String, Boolean> deleteNote(Integer id) {
         Note course = noteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Note not found."));

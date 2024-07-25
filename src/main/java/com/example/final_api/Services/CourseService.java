@@ -43,7 +43,10 @@ public class CourseService {
 
         return courseRepository.save(course);
     }
-
+    public Course getCourseByNameAndUserId(String name, int userId) {
+        return courseRepository.findByCourseNameAndUserUserId(name, userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found with name " + name + " and userId " + userId));
+    }
     public Map<String, Boolean> deleteCourse(Integer id) {
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found."));

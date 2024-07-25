@@ -14,7 +14,6 @@ public class UserService {
     @Autowired
     private UserRepo userRepository;
 
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -22,6 +21,7 @@ public class UserService {
     public User getUserById(Integer id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
+
     public User saveUser(User user) {
         return userRepository.save(user);
     }
@@ -29,10 +29,11 @@ public class UserService {
     public Optional<User> findByEmail(String username) {
         return userRepository.findByEmail(username);
     }
-    public boolean login(String email, String password) {
+
+    public User login(String email, String password) {
         return userRepository.findByEmail(email)
-                .map(user -> user.getPassword().equals(password))
-                .orElse(false);
+                .filter(user -> user.getPassword().equals(password))
+                .orElse(null);
     }
 
 }

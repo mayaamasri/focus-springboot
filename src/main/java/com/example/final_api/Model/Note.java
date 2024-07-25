@@ -23,8 +23,8 @@ public class Note {
     @JoinColumn(name = "user_ID", nullable = false)
     private User user;
 
-//    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<CollabNote> collabNotes;
+    @OneToMany(mappedBy = "note", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<NoteColab> noteColabs;
 
     public Note() {
     }
@@ -76,13 +76,13 @@ public class Note {
         this.user = user;
     }
 
-//    public Set<CollabNote> getCollabNotes() {
-//        return collabNotes;
-//    }
-//
-//    public void setCollabNotes(Set<CollabNote> collabNotes) {
-//        this.collabNotes = collabNotes;
-//    }
+    public Set<NoteColab> getNoteColabs() {
+        return noteColabs;
+    }
+
+    public void setNoteColabs(Set<NoteColab> noteColabs) {
+        this.noteColabs = noteColabs;
+    }
 
     @Override
     public String toString() {

@@ -22,7 +22,6 @@ public class Material {
     public Material() {
 
     }
-
     public Material(Integer materialId, String document) {
         this.materialId = materialId;
         this.documentPath = document;

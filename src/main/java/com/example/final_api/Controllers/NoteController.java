@@ -45,6 +45,11 @@ public class NoteController {
         Note savedNote = noteService.saveNote(note);
         return new ResponseEntity<>(savedNote, HttpStatus.CREATED);
     }
+    @GetMapping("/user/{userId}/title")
+    public ResponseEntity<Note> getNoteByTitleAndUserId(@PathVariable Integer userId, @RequestParam String title) {
+        Note note = noteService.getNoteByTitleAndUserId(title, userId);
+        return ResponseEntity.ok(note);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateNote(@PathVariable Integer id,@Valid @RequestBody Note note, BindingResult result) {
